@@ -1,17 +1,30 @@
-#ifndef snake_cpp
-#define snake_cpp
+#ifndef snake_hpp
+#define snake_hpp
 
 #include <SDL2/SDL.h>
+#include <stdio.h>
+#include <iostream>
 
-class MainWindow {
+class Game {
 public:
-  MainWindow();
-  ~MainWindow();
-  int init(int width, int height);
-  SDL_Renderer *getRenderer();
+  Game();
+  ~Game();
+
+  void init(const char *title, int xpos, int ypos, int width, int height, bool fullscreen);
+
+  void handleEvents();
+  void update();
+  void render();
+  void clean();
+  // SDL_Renderer *getRenderer();
+
+  bool running() { return isRunning; };
+
 private:
+  
+  bool isRunning;
   SDL_Window *window;
   SDL_Renderer *renderer;
 };
 
-#endif
+#endif 

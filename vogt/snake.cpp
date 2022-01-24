@@ -1,24 +1,66 @@
-#include <SDL2/SDL.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include "snake.hpp"
 
-MainWindow::MainWindow() {
-    this-> window = NULL; // Affichage fenêtre
-    this-> renderer = NULL; // Surface fenêtre
+Game::Game()
+{}
+Game::~Game()
+{}
+
+void Game::init(const char *title, int xpos, int ypos, int width, int height, bool fullscreen){
+
+  int flags = 0;
+  if(fullscreen){
+    flags = SDL_WINDOW_FULLSCREEN;
+  }
+
+  if(SDL_Init(SDL_INIT_EVERYTHING) == 0){
+      std::cout << "Snake !" << std::endl;
+
+      window = SDL_CreateWindow( title, xpos, ypos, width, height, flags);
+      if(window){
+        std::cout << "Window Open !" << std::endl;
+      }
+      renderer = SDL_CreateRenderer(window, -1, 0);
+      if(renderer){
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        std::cout << "Renderer Create !" << std::endl;
+      }
+
+      isRunning = true;
+  }
+  else{
+    isRunning = false;
+  }
 }
-MainWindow::~MainWindow() {
-    SDL_DestroyWindow(window); // Destruction fenêtre
+
+void Game::handleEvents(){
+  SDL_Event event;
+  SDL_PollEvent(&event);
+
+  switch (event.type)
+  {
+  case SDL_QUIT:
+    isRunning = false;
+    break;
+  
+  default:
+    break;
+  }
+
 }
-int MainWindow::init(int width, int height) {
-    // Init fenêtre
-    window = SDL_CreateWindow("Snake!", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
-    if (window == NULL) {
-        printf("Impossible de créer la fenêtre: %s\n", SDL_GetError()); //on affiche l'erreur
-        return EXIT_FAILURE; //on sort du programme pour éviter de plus gros problèmes
-    }
-    return 0;
+
+void Game::update(){
 }
-SDL_Renderer *MainWindow::getRenderer() {
-    return this-> renderer;
+
+void Game::render(){
+  SDL_RenderClear(renderer);
+
+  SDL_RenderPresent(renderer);
+
+  }
+
+void Game::clean(){
+  SDL_DestroyWindow(window);
+  SDL_DestroyRenderer(renderer);
+  SDL_Quit();
+  std::cout << "Game quit !" <<std::endl;
 }
