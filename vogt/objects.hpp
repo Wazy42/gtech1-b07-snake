@@ -22,6 +22,8 @@ private:
 
 class Fruit {
 public:
+  Fruit();
+  ~Fruit();
   int x;
   int y;
   void fruit_init();

@@ -29,11 +29,13 @@ void Snake::move(int dir) {
   this-> y = y + dirY * TILE_SIZE;
 }
 
-void Fruit::fruit_init() {
+Fruit::Fruit(){
   relocate();
 }
 
+Fruit::~Fruit(){}
+
 void Fruit::relocate() {
-  int x = rand() % SCREEN_WIDTH/TILE_SIZE;
-  int y = rand() % SCREEN_HEIGHT/TILE_SIZE;
+  int x = rand() % (SCREEN_WIDTH/TILE_SIZE);
+  int y = rand() % (SCREEN_HEIGHT/TILE_SIZE);
 }

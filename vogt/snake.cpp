@@ -18,14 +18,15 @@ int main(int argc, char *argv[]) {
   }
   
   MainWindow main_window;
-  main_window.init("First window", 1600, 900);
+  main_window.init("Snake Game !", SCREEN_WIDTH, SCREEN_HEIGHT);
   SDL_Window *window = main_window.getWindow();
   SDL_Renderer *renderer = main_window.getRenderer();
   SDL_Surface *screenSurface = SDL_GetWindowSurface(window);
 
   SDL_Event event;
   Snake *Head = new Snake();
-  Uint32 frame_rate = 10;
+  Fruit *fruit = new Fruit();
+  Uint32 frame_rate = 12;
   int dir = 0;
 
   while (1) {
@@ -53,8 +54,10 @@ int main(int argc, char *argv[]) {
 
     // Drawing
     SDL_FillRect(screenSurface, NULL, 0);
-    SDL_Rect rect = {Head->x, Head->y, 16, 16};
-    SDL_FillRect(screenSurface, &rect, SDL_MapRGB(screenSurface-> format, 255, 0, 0));
+    SDL_Rect rectHead = {Head->x, Head->y, TILE_SIZE, TILE_SIZE};
+    SDL_FillRect(screenSurface, &rectHead, SDL_MapRGB(screenSurface-> format, 255, 0, 0));
+    SDL_Rect rectFruit = {fruit->x, fruit->y, TILE_SIZE, TILE_SIZE};
+    SDL_FillRect(screenSurface, &rectFruit, SDL_MapRGB(screenSurface-> format, 0, 255, 0));
 
     // Update
     tTime = SDL_GetTicks() - tTime;
