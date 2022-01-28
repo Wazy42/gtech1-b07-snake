@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "snake.hpp"
 
+
 MainWindow::MainWindow() {
   this-> window = NULL; // Affichage fenêtre
   this-> renderer = NULL; // Surface fenêtre
@@ -74,6 +75,18 @@ int Square::move() {
   return EXIT_SUCCESS;
 }
 
+
+void Fruit::fruit_init(){
+    int fruitx = rand() % 1600 + 1;
+    int fruity = rand() % 900 + 1;
+
+    if ( &headx && &heady = fruitx && fruity){
+        this->fruitx = rand() % 1600 + 1;
+        this->fruity = rand() % 900 + 1; 
+    }
+}
+
+
 int main(int argc, char *argv[]) {
   // SDL Init
   if(SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -82,13 +95,14 @@ int main(int argc, char *argv[]) {
   }
   
   MainWindow main_window;
-  main_window.init("First window", 1600, 900);
+  main_window.init("Snake Game !", 1600, 900);
   SDL_Window *window = main_window.getWindow();
   SDL_Renderer *renderer = main_window.getRenderer();
   SDL_Surface *screenSurface = SDL_GetWindowSurface(window);
 
   SDL_Event event;
   Square *CARRE = new Square();
+  Square *FRUIT = new Square();
   Uint32 frame_rate = 60;
 
   while (1) {
@@ -122,7 +136,8 @@ int main(int argc, char *argv[]) {
     SDL_FillRect(screenSurface, NULL, 0);
     SDL_Rect rect = {CARRE->x, CARRE->y, 16, 16};
     SDL_FillRect(screenSurface, &rect, SDL_MapRGB(screenSurface-> format, 255, 0, 0));
-
+    SDL_Rect rect2 = {CARRE->x, CARRE->y, 16, 16};
+    SDL_FillRect(screenSurface, &rect2, SDL_MapRGB(screenSurface-> format, 255, 0, 0));
     // Update
     SDL_UpdateWindowSurface(main_window.getWindow());
     SDL_Delay(SDL_GetTicks() - frame_time_start);
