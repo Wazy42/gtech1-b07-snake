@@ -1,5 +1,14 @@
 #include "graphics.hpp"
 
+#ifndef includes
+#include <SDL2/SDL.h>
+#include <stdio.h>
+#include <stdlib.h>
+#define SCREEN_WIDTH 1600
+#define SCREEN_HEIGHT 900
+#define TILE_SIZE 16
+#endif
+
 MainWindow::MainWindow() {
   this-> window = NULL; // Affichage fenêtre
   this-> renderer = NULL; // Surface fenêtre
@@ -12,7 +21,7 @@ MainWindow::~MainWindow() {
 
 void MainWindow::init(const char *name, int width, int height) {
   // Init window & randerer
-  if (SDL_CreateWindowAndRenderer(1600, 900, SDL_WINDOW_RESIZABLE, &window, &renderer) < 0) {
+  if (SDL_CreateWindowAndRenderer(SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_RESIZABLE, &window, &renderer) < 0) {
     printf("Erreur lors de la creation d'un renderer : %s", SDL_GetError());
     return;
   }
