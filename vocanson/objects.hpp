@@ -1,14 +1,3 @@
-#ifndef includes
-#include <SDL2/SDL.h>
-#include <stdio.h>
-#include <stdlib.h>
-#define SCREEN_WIDTH 1200
-#define SCREEN_HEIGHT 675
-#define TILE_SIZE 16
-#define GRID_WIDTH SCREEN_WIDTH/TILE_SIZE
-#define GRID_HEIGHT SCREEN_HEIGHT/TILE_SIZE
-#endif
-
 class Fragment {
 public:
   int x;  // Position horizontale
@@ -17,7 +6,9 @@ public:
   ~Fragment();
   void move(int newX, int newY);
   void createFragment(int newX, int newY);
-  void printAndNext(SDL_Renderer* renderer);
+  void printAndNext(SDL_Renderer* renderer, int angle);
+  void printSingleSkin(const char* file, SDL_Renderer* renderer, int angle);
+  bool checkColision(int newX, int newY);
   Fragment* next; // Next fragment
 private:
 };
@@ -42,11 +33,10 @@ public:
   void move(int dir);
   void eat(Fruit* whatever);
   void printEntireSnake(SDL_Renderer* renderer);
+  bool hitAWallOrHimself();
   Fragment* Head;
 private:
   Fragment* Tail;
-  int lastX;
-  int lastY;
   int dirX; // Direction horizonale
   int dirY; // Direction vertiacale
   int actualLenght;
