@@ -19,7 +19,10 @@ void Fragment::printAndNext(SDL_Renderer* renderer, int angle) {
   if (next != NULL) {
     // formule compliquée pour avoir le prochain angle en fonction des coordonnées
     int nextAngle = 90*((this->x-this->next->x-1)*(this->x-this->next->x)+this->y-this->next->y);
-    if (nextAngle != angle) {
+    if (this->x==this->next->x && this->y==this->next->y)
+      this-> next-> printAndNext(renderer, angle);
+    else if (nextAngle != angle) {
+      if ((nextAngle+360)%360 - angle == 90) angle -= 90;
       printImgOnRenderer("../sprites/L_body_c.png", renderer, {this->x, this->y}, angle);
       this-> next-> printAndNext(renderer, nextAngle);
     } else {

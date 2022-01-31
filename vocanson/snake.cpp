@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
   srand(time(0)); // rand() init
   Snake *Nico = new Snake(GRID_WIDTH/3, GRID_HEIGHT/2, 0); // Snake
   Fruit *Apple = new Fruit(); // Fruit
-  Uint32 frame_rate = 10; // Frame rate (fps)
+  Uint32 frame_rate = 5; // Frame rate (fps)
   int dir = 0; // Snake next direction
   int count = 0; // How many cases the snake has moved forward
 
