@@ -20,14 +20,14 @@ void Fragment::printAndNext(SDL_Renderer* renderer, int angle) {
     // formule compliquée pour avoir le prochain angle en fonction des coordonnées
     int nextAngle = 90*((this->x-this->next->x-1)*(this->x-this->next->x)+this->y-this->next->y);
     if (nextAngle != angle) {
-      printImgOnRenderer("../sprites/L_body_c.png", renderer, {this->x, this->y}, angle);
+      printImgOnRenderer("sprites/L_body_c.png", renderer, {this->x, this->y}, angle);
       this-> next-> printAndNext(renderer, nextAngle);
     } else {
-      printImgOnRenderer("../sprites/body_c.png", renderer, {this->x, this->y}, angle);
+      printImgOnRenderer("sprites/body_c.png", renderer, {this->x, this->y}, angle);
       this-> next-> printAndNext(renderer, nextAngle);
     }
   } else {
-    printImgOnRenderer("../sprites/tail_c.png", renderer, {this->x, this->y}, angle);
+    printImgOnRenderer("sprites/tail_c.png", renderer, {this->x, this->y}, angle);
   }
 }
 
@@ -64,7 +64,7 @@ void Fruit::relocate() {
 }
 
 void Fruit::print(SDL_Renderer* renderer) {
-  printImgOnRenderer("../sprites/apple.png", renderer, {this->x, this->y});
+  printImgOnRenderer("sprites/apple.png", renderer, {this->x, this->y});
 }
  
 
@@ -102,7 +102,7 @@ void Snake::eat(Fruit* whatever) {
 
 void Snake::printEntireSnake(SDL_Renderer* renderer) {
   this-> Head -> next-> printAndNext(renderer, 90*((this->Head->x-this->Head->next->x-1)*(this->Head->x-this->Head->next->x)+this->Head->y-this->Head->next->y));
-  this-> Head -> printSingleSkin("../sprites/head_c.png", renderer, 90*((dirX-1)*dirX+dirY));
+  this-> Head -> printSingleSkin("sprites/head_c.png", renderer, 90*((dirX-1)*dirX+dirY));
 }
 
 bool Snake::hitAWallOrHimself() {
