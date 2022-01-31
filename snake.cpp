@@ -4,10 +4,10 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define SCREEN_WIDTH 1240
+#define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 672
 #define TILE_SIZE 32
-#define GRID_WIDTH 36
+#define GRID_WIDTH 37
 #define GRID_HEIGHT 18
 
 #define BG_COLOR 0, 0, 0
@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
   srand(time(0)); // rand() init
   Snake *Nico = new Snake(GRID_WIDTH/3, GRID_HEIGHT/2, 0); // Snake
   Fruit *Apple = new Fruit(); // Fruit
-  Uint32 frame_rate = 10; // Frame rate (fps)
+  Uint32 frame_rate = 9; // Frame rate (fps)
   int dir = 0; // Snake next direction
   int count = 0; // How many cases the snake has moved forward
 

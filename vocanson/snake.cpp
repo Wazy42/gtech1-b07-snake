@@ -4,10 +4,10 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define SCREEN_WIDTH 1260
+#define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 672
 #define TILE_SIZE 32
-#define GRID_WIDTH 36
+#define GRID_WIDTH 37
 #define GRID_HEIGHT 18
 
 #define BG_COLOR 0, 0, 0
