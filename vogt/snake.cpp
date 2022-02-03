@@ -1,145 +1,67 @@
+#ifndef includes
 #include <SDL2/SDL.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "snake.hpp"
+#define SCREEN_WIDTH 1600
+#define SCREEN_HEIGHT 900
+#define TILE_SIZE 16
+#endif
 
-
-MainWindow::MainWindow() {
-  this-> window = NULL; // Affichage fenêtre
-  this-> renderer = NULL; // Surface fenêtre
-}
-
-MainWindow::~MainWindow() {
-  SDL_DestroyRenderer(renderer); // Destruction renderer
-  SDL_DestroyWindow(window); // Destruction fenêtre
-}
-
-int MainWindow::init(const char *name, int width, int height) {
-  // Init window & randerer
-  if (SDL_CreateWindowAndRenderer(1600, 900, SDL_WINDOW_RESIZABLE, &window, &renderer) < 0) {
-    printf("Erreur lors de la creation d'un renderer : %s", SDL_GetError());
-    return EXIT_FAILURE;
-  }
-  SDL_SetWindowTitle(window, name);
-  return EXIT_SUCCESS;
-}
-SDL_Renderer *MainWindow::getRenderer() {
-    return this-> renderer;
-}
-
-SDL_Window *MainWindow::getWindow() {
-    return this-> window;
-}
-
-Square::Square() {
-  this-> dirX = 1;
-  this-> dirY = 0;
-  this-> x = 1;
-  this-> y = 1;
-}
-
-Square::~Square() {};
-
-int Square::changeDir(int num) {
-  // Go UP
-  if (num == 1 && dirY != 1) {
-    this-> dirX = 0;
-    this-> dirY = -1;
-    return EXIT_SUCCESS;
-  }
-  // Go DOWN
-  if (num == 3 && dirY != -1) {
-    this-> dirX = 0;
-    this-> dirY = 1;
-    return EXIT_SUCCESS;
-  }
-  // Go LEFT
-  if (num == 2 && dirX != 1) {
-    this-> dirX = -1;
-    this-> dirY = 0;
-    return EXIT_SUCCESS;
-  }
-  // Go RIGHT
-  if (num == 0 && dirX != -1) {
-    this-> dirX = 1;
-    this-> dirY = 0;
-    return EXIT_SUCCESS;
-  }
-  return EXIT_FAILURE;
-}
-
-int Square::move() {
-  this-> x = x + dirX;
-  this-> y = y + dirY;
-  return EXIT_SUCCESS;
-}
-
-
-void Fruit::fruit_init(){
-    int fruitx = rand() % (SCREEN_WIDTH / TILE_SIZE) + 1;
-    int fruity = rand() % (SCREEN_WIDTH / TILE_SIZE) + 1;
-
-    if ( &headx && &heady = fruitx && fruity){
-        this->fruitx = rand() % (SCREEN_WIDTH / TILE_SIZE) + 1;
-        this->fruity = rand() % (SCREEN_WIDTH / TILE_SIZE) + 1; 
-    }
-}
-
+#include "graphics.cpp"
+#include "objects.cpp"
 
 int main(int argc, char *argv[]) {
   // SDL Init
   if(SDL_Init(SDL_INIT_VIDEO) < 0) {
     printf("Erreur d'initialisation de la SDL : %s",SDL_GetError());//on affiche l'erreur
-    return EXIT_FAILURE;//on sort du programme pour éviter de plus gros problèmes
+    return 1; //on sort du programme pour éviter de plus gros problèmes
   }
   
   MainWindow main_window;
-  main_window.init("Snake Game !", 1600, 900);
+  main_window.init("Snake Game !", SCREEN_WIDTH, SCREEN_HEIGHT);
   SDL_Window *window = main_window.getWindow();
   SDL_Renderer *renderer = main_window.getRenderer();
   SDL_Surface *screenSurface = SDL_GetWindowSurface(window);
 
   SDL_Event event;
-  Square *CARRE = new Square();
-  Square *FRUIT = new Square();
-  Uint32 frame_rate = 60;
+  Snake *Head = new Snake();
+  Fruit *fruit = new Fruit();
+  Uint32 frame_rate = 12;
+  int dir = 0;
 
   while (1) {
-    Uint32 frame_time_start = SDL_GetTicks();
+    Uint32 tTime = SDL_GetTicks();
     // Events
-    SDL_PollEvent(&event);
-    
-    switch (event.type) {
-      case SDL_QUIT:
-        SDL_Quit();
-        return 0;
-      case SDL_KEYDOWN:
-        switch(event.key.keysym.sym) {
-          case SDLK_UP:
-            CARRE-> changeDir(1);
-            break;
-          case SDLK_DOWN:
-            CARRE-> changeDir(3);
-            break;
-          case SDLK_LEFT:
-            CARRE-> changeDir(2);
-            break;
-          case SDLK_RIGHT:
-            CARRE-> changeDir(0);
-            break;
-        }
+    int lastDir = dir;
+
+    while (SDL_PollEvent(&event)) {
+      switch (event.type) {
+        case SDL_QUIT:
+          SDL_Quit();
+          return 0;
+        case SDL_KEYDOWN:
+          if (event.key.keysym.sym == SDLK_UP && lastDir != 3)
+            dir = 1;
+          if (event.key.keysym.sym == SDLK_DOWN && lastDir != 1)
+            dir = 3;
+          if (event.key.keysym.sym == SDLK_LEFT && lastDir != 0)
+            dir = 2;
+          if (event.key.keysym.sym == SDLK_RIGHT && lastDir != 2)
+            dir = 0;
+      }
     }
-    CARRE-> move();
+    Head-> move(dir);
 
     // Drawing
     SDL_FillRect(screenSurface, NULL, 0);
-    SDL_Rect rect = {CARRE->x, CARRE->y, 16, 16};
-    SDL_FillRect(screenSurface, &rect, SDL_MapRGB(screenSurface-> format, 255, 0, 0));
-    SDL_Rect rect2 = {CARRE->x, CARRE->y, 16, 16};
-    SDL_FillRect(screenSurface, &rect2, SDL_MapRGB(screenSurface-> format, 255, 0, 0));
-    
+    SDL_Rect rectHead = {Head->x, Head->y, TILE_SIZE, TILE_SIZE};
+    SDL_FillRect(screenSurface, &rectHead, SDL_MapRGB(screenSurface-> format, 255, 0, 0));
+    SDL_Rect rectFruit = {fruit->x, fruit->y, TILE_SIZE, TILE_SIZE};
+    SDL_FillRect(screenSurface, &rectFruit, SDL_MapRGB(screenSurface-> format, 0, 255, 0));
+
     // Update
+    tTime = SDL_GetTicks() - tTime;
+      SDL_Delay(1000 / frame_rate - tTime);
     SDL_UpdateWindowSurface(main_window.getWindow());
-    SDL_Delay(SDL_GetTicks() - frame_time_start);
   }
 }

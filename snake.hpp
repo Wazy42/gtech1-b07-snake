@@ -1,31 +1,21 @@
-#ifndef snake_cpp
-#define snake_cpp
-
 #include <SDL2/SDL.h>
+#include "graphics.hpp"
+#include "objects.hpp"
 
-class MainWindow {
+class Application{
 public:
-  MainWindow();
-  ~MainWindow();
-  int init(const char *name, int width, int height);
-  SDL_Window *getWindow();
-  SDL_Renderer *getRenderer();
+    Application();
+    ~Application();
+    void appLddoop();
+    void appInit();
 private:
-  SDL_Window *window;
-  SDL_Renderer *renderer;
-};
-
-class Square {
-public:
-  int x;  // Position horizontale
-  int y; // Position verticale
-  Square();
-  ~Square();
-  int changeDir(int num);
-  int move();
-private:
-  int dirX; // Direction horizonale
-  int dirY; // Direction vertiacale
-};
-
-#endif
+    MainWindow main_window;
+    SDL_Renderer* renderer;
+    Playground Room;
+    SDL_Event event; // Bind keyboard/mouse events
+    Snake* Nico;
+    Fruit* Apple;
+    Uint32 frame_rate;
+    int dir = 0; // Snake next direction
+    int count = 0; // How many cases the snake has moved forward
+}

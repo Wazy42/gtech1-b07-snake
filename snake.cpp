@@ -1,130 +1,91 @@
-#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+#include "score.hpp"
+
+#define SCREEN_WIDTH 1280
+#define SCREEN_HEIGHT 672
+#define TILE_SIZE 32
+#define GRID_WIDTH 37
+#define GRID_HEIGHT 18
+
+#define BG_COLOR 0, 0, 0
+#define SNAKE_COLOR 255, 30, 60
+#define FRUIT_COLOR 0, 140, 140
+#define WALL_COLOR 40, 200, 40
+
+#define SIZE_GAIN_BY_EATING 3
+
 #include "snake.hpp"
 
-MainWindow::MainWindow() {
-  this-> window = NULL; // Affichage fenêtre
-  this-> renderer = NULL; // Surface fenêtre
+
+Application::Application(){
+  if(SDL_Init(SDL_INIT_VIDEO) < 0) { // SDL init error ?
+    printf("SDL initialization error: %s\nn",SDL_GetError()); // Print error
+    return 1; // Quit to avoid more problems
+  IMG_Init(IMG_INIT_PNG);
+  srand(time(0)); // rand() init
+  this-> frame_rate = 30; // Frame rate (fps)
+  this-> snake_rate = 8 // Tiles per second (tps)
+  appInit();
+  appLoop();
 }
 
-MainWindow::~MainWindow() {
-  SDL_DestroyRenderer(renderer); // Destruction renderer
-  SDL_DestroyWindow(window); // Destruction fenêtre
+Application::~Application(){
+  delete this-> Nico;
+  delete this-> Apple;
+  IMG_Quit();
+  SDL_Quit();
 }
 
-int MainWindow::init(const char *name, int width, int height) {
-  // Init window & randerer
-  if (SDL_CreateWindowAndRenderer(1600, 900, SDL_WINDOW_RESIZABLE, &window, &renderer) < 0) {
-    printf("Erreur lors de la creation d'un renderer : %s", SDL_GetError());
-    return EXIT_FAILURE;
-  }
-  SDL_SetWindowTitle(window, name);
-  return EXIT_SUCCESS;
-}
-SDL_Renderer *MainWindow::getRenderer() {
-    return this-> renderer;
-}
-
-SDL_Window *MainWindow::getWindow() {
-    return this-> window;
-}
-
-
-Square::Square() {
-  this-> dirX = 1;
-  this-> dirY = 0;
-  this-> x = 1;
-  this-> y = 1;
-}
-
-Square::~Square() {};
-
-int Square::changeDir(int num) {
-  // Go UP
-  if (num == 1 && dirY != 1) {
-    this-> dirX = 0;
-    this-> dirY = -1;
-    return EXIT_SUCCESS;
-  }
-  // Go DOWN
-  if (num == 3 && dirY != -1) {
-    this-> dirX = 0;
-    this-> dirY = 1;
-    return EXIT_SUCCESS;
-  }
-  // Go LEFT
-  if (num == 2 && dirX != 1) {
-    this-> dirX = -1;
-    this-> dirY = 0;
-    return EXIT_SUCCESS;
-  }
-  // Go RIGHT
-  if (num == 0 && dirX != -1) {
-    this-> dirX = 1;
-    this-> dirY = 0;
-    return EXIT_SUCCESS;
-  }
-  return EXIT_FAILURE;
-}
-
-int Square::move() {
-  this-> x = x + dirX;
-  this-> y = y + dirY;
-  return EXIT_SUCCESS;
-}
-
-int main(int argc, char *argv[]) {
-  // SDL Init
-  if(SDL_Init(SDL_INIT_VIDEO) < 0) {
-    printf("Erreur d'initialisation de la SDL : %s",SDL_GetError());//on affiche l'erreur
-    return EXIT_FAILURE;//on sort du programme pour éviter de plus gros problèmes
-  }
-  
-  MainWindow main_window;
-  main_window.init("First window", 1600, 900);
-  SDL_Window *window = main_window.getWindow();
-  SDL_Renderer *renderer = main_window.getRenderer();
-  SDL_Surface *screenSurface = SDL_GetWindowSurface(window);
-
-  SDL_Event event;
-  Square *CARRE = new Square();
-  Uint32 frame_rate = 60;
-
-  while (1) {
-    Uint32 frame_time_start = SDL_GetTicks();
-    // Events
-    SDL_PollEvent(&event);
+void Application::appLoop() {
+  /// Main loop
+  do {
+    count++; 
+    Uint32 tTime = SDL_GetTicks(); // For frame rate
     
-    switch (event.type) {
-      case SDL_QUIT:
-        SDL_Quit();
-        return 0;
-      case SDL_KEYDOWN:
-        switch(event.key.keysym.sym) {
-          case SDLK_UP:
-            CARRE-> changeDir(1);
-            break;
-          case SDLK_DOWN:
-            CARRE-> changeDir(3);
-            break;
-          case SDLK_LEFT:
-            CARRE-> changeDir(2);
-            break;
-          case SDLK_RIGHT:
-            CARRE-> changeDir(0);
-            break;
-        }
+    /// Events
+    int lastDir = this-> dir; // Last direction (we can't go backward)
+    while (SDL_PollEvent(this-> &event)) { // While there is keyboard/mouse event in the queue
+      switch (this-> event.type) {
+        case SDL_QUIT: // In case we hit the red X or Alt+f4
+          ~Application()
+        case SDL_KEYDOWN: // We pressed a key on the keyboard
+          if (this-> event.key.keysym.sym == SDLK_UP && lastDir != 1) dir = 3; // Up arrow
+          if (this-> event.key.keysym.sym == SDLK_DOWN && lastDir != 3) dir = 1; // Down arrow
+          if (this-> event.key.keysym.sym == SDLK_LEFT && lastDir != 0) dir = 2; // Left arrow
+          if (this-> event.key.keysym.sym == SDLK_RIGHT && lastDir != 2) dir = 0; // Right arrow
+      }
     }
-    CARRE-> move();
+    Nico-> move(dir); // Snake moves forward
+    // If the head is on a fruit, we eat it
+    if (this->Apple->x == this->Nico->Head->x && this->Apple->y == this->Nico->Head->y)
+      this-> Nico->eat(this-> Apple);
+    
+    /// Drawing
+    this-> Room.eraseAndWalls();
+    this-> Nico-> printEntireSnake(this-> renderer); // Display snake
+    this-> Apple-> print(this-> renderer); // Display fruit
+    SDL_RenderPresent(this-> renderer); // Update the window (print all at once)
 
-    // Drawing
-    SDL_FillRect(screenSurface, NULL, 0);
-    SDL_Rect rect = {CARRE->x, CARRE->y, 16, 16};
-    SDL_FillRect(screenSurface, &rect, SDL_MapRGB(screenSurface-> format, 255, 0, 0));
+    /// Frame rate
+    tTime = SDL_GetTicks() - tTime; // tTime is now time elapsed in execution
+    // If execution time is less than the frame rate (no lag), we wait next frame
+    if (1000 / this-> frame_rate - tTime > 0) SDL_Delay(1000 / this-> frame_rate - tTime);
+  } while (!this-> Nico-> hitAWallOrHimself());
+  SDL_Delay(1000);
+  delete Nico; 
+}
 
-    // Update
-    SDL_UpdateWindowSurface(main_window.getWindow());
-    SDL_Delay(SDL_GetTicks() - frame_time_start);
+void appInit() {
   }
+  /// Graphical init
+  this-> main_window.init("ゲームをヘビ", SCREEN_WIDTH, SCREEN_HEIGHT);
+  this-> renderer = main_window.getRenderer(); // Get renderer
+  this-> Room(renderer);
+  
+  /// Variables init
+  this-> Nico = new Snake(GRID_WIDTH/3, GRID_HEIGHT/2, 0); // Snake
+  this-> Apple = new Fruit(); // Fruit
 }
