@@ -1,4 +1,7 @@
-#include "objects.hpp"
+#include <SDL2/SDL_image.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 672
@@ -12,6 +15,8 @@
 #define WALL_COLOR 40, 200, 40
 
 #define SIZE_GAIN_BY_EATING 3
+
+#include "objects.hpp"
 
 // Class FRAGMENT
 Fragment::Fragment(int newX, int newY) {

@@ -1,3 +1,21 @@
+#include <SDL2/SDL_image.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define SCREEN_WIDTH 1280
+#define SCREEN_HEIGHT 672
+#define TILE_SIZE 32
+#define GRID_WIDTH 37
+#define GRID_HEIGHT 18
+
+#define BG_COLOR 0, 0, 0
+#define SNAKE_COLOR 255, 30, 60
+#define FRUIT_COLOR 0, 140, 140
+#define WALL_COLOR 40, 200, 40
+
+#define SIZE_GAIN_BY_EATING 3
+
 #include "graphics.hpp"
 
 MainWindow::MainWindow() {
@@ -29,8 +47,8 @@ void rendererReset(SDL_Renderer* renderer) {
 }
 
 void printRectOnRenderer(SDL_Rect rect, SDL_Renderer* renderer, int r, int g, int b) {
-  rect.x = (rect.x + 1) * TILE_SIZE -1;
-  rect.y = (rect.y + 1) * TILE_SIZE -1;
+  rect.x = (rect.x + 1) * TILE_SIZE;
+  rect.y = (rect.y + 1) * TILE_SIZE;
   rect.w = TILE_SIZE;
   rect.h = TILE_SIZE;
   SDL_SetRenderDrawColor(renderer, r, g, b, 255);
@@ -40,8 +58,8 @@ void printRectOnRenderer(SDL_Rect rect, SDL_Renderer* renderer, int r, int g, in
 void printImgOnRenderer(const char* file, SDL_Renderer* renderer, SDL_Rect pos, int angle) {
   SDL_Surface* img = IMG_Load(file);
   SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, img);
-  pos.x = (pos.x + 1) * TILE_SIZE -1;
-  pos.y = (pos.y + 1) * TILE_SIZE -1;
+  pos.x = (pos.x + 1) * TILE_SIZE;
+  pos.y = (pos.y + 1) * TILE_SIZE;
   pos.w = TILE_SIZE;
   pos.h = TILE_SIZE;
   SDL_RenderCopyEx(renderer, texture, NULL, &pos, angle, NULL, SDL_FLIP_NONE);
@@ -59,13 +77,7 @@ Playground::~Playground() {}
 
 void Playground::eraseAndWalls() {
   rendererReset(this-> renderer); // Clear the window
-  for (int i = 0; i < GRID_WIDTH+1; i++) {
-    for (int j = 0; j < GRID_HEIGHT+1; j++) {
-      if ((i+j)%2 == 0) printRectOnRenderer({i, j}, this-> renderer, FIRST_FLOOR_TILE_COLOR);
-      else printRectOnRenderer({i, j}, this-> renderer, SECOND_FLOOR_TILE_COLOR);
-    }
-  }
-  SDL_SetRenderDrawColor(this-> renderer, WALL_COLOR, 255);
+  SDL_SetRenderDrawColor(this-> renderer, 20, WALL_COLOR);
   for (int i = 0; i < TILE_SIZE-1; i++) {
     SDL_Rect rect = {i, i, SCREEN_WIDTH-(i+1)*2, SCREEN_HEIGHT-(i+1)*2};
     SDL_RenderDrawRect(this-> renderer, &rect);

@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "score.hpp"
 
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 672
@@ -18,16 +17,17 @@
 #define SIZE_GAIN_BY_EATING 3
 
 #include "snake.hpp"
+#include "score.hpp"
 
 
-Application::Application(){
+Application::Application() {
   if(SDL_Init(SDL_INIT_VIDEO) < 0) { // SDL init error ?
     printf("SDL initialization error: %s\nn",SDL_GetError()); // Print error
-    return 1; // Quit to avoid more problems
+    exit(1); // Quit to avoid more problems
   IMG_Init(IMG_INIT_PNG);
   srand(time(0)); // rand() init
   this-> frame_rate = 30; // Frame rate (fps)
-  this-> snake_rate = 8 // Tiles per second (tps)
+  this-> snake_rate = 8; // Tiles per second (tps)
   appInit();
   appLoop();
 }
