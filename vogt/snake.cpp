@@ -31,7 +31,6 @@ SDL_Window *MainWindow::getWindow() {
     return this-> window;
 }
 
-
 Square::Square() {
   this-> dirX = 1;
   this-> dirY = 0;
@@ -77,12 +76,12 @@ int Square::move() {
 
 
 void Fruit::fruit_init(){
-    int fruitx = rand() % 1600 + 1;
-    int fruity = rand() % 900 + 1;
+    int fruitx = rand() % (SCREEN_WIDTH / TILE_SIZE) + 1;
+    int fruity = rand() % (SCREEN_WIDTH / TILE_SIZE) + 1;
 
     if ( &headx && &heady = fruitx && fruity){
-        this->fruitx = rand() % 1600 + 1;
-        this->fruity = rand() % 900 + 1; 
+        this->fruitx = rand() % (SCREEN_WIDTH / TILE_SIZE) + 1;
+        this->fruity = rand() % (SCREEN_WIDTH / TILE_SIZE) + 1; 
     }
 }
 
@@ -138,6 +137,7 @@ int main(int argc, char *argv[]) {
     SDL_FillRect(screenSurface, &rect, SDL_MapRGB(screenSurface-> format, 255, 0, 0));
     SDL_Rect rect2 = {CARRE->x, CARRE->y, 16, 16};
     SDL_FillRect(screenSurface, &rect2, SDL_MapRGB(screenSurface-> format, 255, 0, 0));
+    
     // Update
     SDL_UpdateWindowSurface(main_window.getWindow());
     SDL_Delay(SDL_GetTicks() - frame_time_start);
