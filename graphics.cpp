@@ -27,8 +27,12 @@ MainWindow::MainWindow() {
 }
 
 MainWindow::~MainWindow() {
+  
+      printf("ENTER THE DESTRUCTEEER\n");
   SDL_DestroyRenderer(renderer); // Destruction renderer
+      printf("apres le red\n");
   SDL_DestroyWindow(window); // Destruction fenêtre
+      printf("g fini\n");
 }
 
 void MainWindow::init(const char *name, int width, int height) {
