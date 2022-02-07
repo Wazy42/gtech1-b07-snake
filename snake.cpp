@@ -17,13 +17,16 @@
 #define SIZE_GAIN_BY_EATING 3
 
 #include "snake.hpp"
-#include "score.hpp"
+#include "objects.hpp"
+#include "graphics.hpp"
+//#include "score.hpp"
 
 
 Application::Application() {
   if(SDL_Init(SDL_INIT_VIDEO) < 0) { // SDL init error ?
     printf("SDL initialization error: %s\nn",SDL_GetError()); // Print error
     exit(1); // Quit to avoid more problems
+  }
   IMG_Init(IMG_INIT_PNG);
   srand(time(0)); // rand() init
   this-> frame_rate = 30; // Frame rate (fps)
@@ -31,6 +34,7 @@ Application::Application() {
   appInit();
   appLoop();
 }
+
 
 Application::~Application(){
   delete this-> Nico;
@@ -47,10 +51,11 @@ void Application::appLoop() {
     
     /// Events
     int lastDir = this-> dir; // Last direction (we can't go backward)
-    while (SDL_PollEvent(this-> &event)) { // While there is keyboard/mouse event in the queue
+    while (SDL_PollEvent(&this-> event)) { // While there is keyboard/mouse event in the queue
       switch (this-> event.type) {
         case SDL_QUIT: // In case we hit the red X or Alt+f4
-          ~Application()
+          delete Nico;
+          return;
         case SDL_KEYDOWN: // We pressed a key on the keyboard
           if (this-> event.key.keysym.sym == SDLK_UP && lastDir != 1) dir = 3; // Up arrow
           if (this-> event.key.keysym.sym == SDLK_DOWN && lastDir != 3) dir = 1; // Down arrow
@@ -64,7 +69,7 @@ void Application::appLoop() {
       this-> Nico->eat(this-> Apple);
     
     /// Drawing
-    this-> Room.eraseAndWalls();
+    this-> Room-> eraseAndWalls();
     this-> Nico-> printEntireSnake(this-> renderer); // Display snake
     this-> Apple-> print(this-> renderer); // Display fruit
     SDL_RenderPresent(this-> renderer); // Update the window (print all at once)
@@ -78,12 +83,11 @@ void Application::appLoop() {
   delete Nico; 
 }
 
-void appInit() {
-  }
+void Application::appInit() {
   /// Graphical init
   this-> main_window.init("ゲームをヘビ", SCREEN_WIDTH, SCREEN_HEIGHT);
   this-> renderer = main_window.getRenderer(); // Get renderer
-  this-> Room(renderer);
+  this-> Room = new Playground(renderer);
   
   /// Variables init
   this-> Nico = new Snake(GRID_WIDTH/3, GRID_HEIGHT/2, 0); // Snake

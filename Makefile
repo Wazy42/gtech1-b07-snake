@@ -1,8 +1,8 @@
 CC=g++
 # Adapt the variables below to your needs:
 EXE=snake.exe
-CPP=graphics.cpp objects.cpp snake.cpp
-HPP=graphics.hpp objects.cpp snake.cpp
+CPP=main.cpp graphics.cpp objects.cpp snake.cpp
+HPP=				 graphics.hpp objects.hpp snake.hpp
 
 # The default is build the executable file:
 default: $(EXE)

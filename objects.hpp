@@ -1,3 +1,5 @@
+#pragma once
+
 class Fragment {
 public:
   int x;  // Position horizontale

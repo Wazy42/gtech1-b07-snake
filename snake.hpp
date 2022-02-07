@@ -1,3 +1,4 @@
+#pragma once
 #include <SDL2/SDL.h>
 #include "graphics.hpp"
 #include "objects.hpp"
@@ -11,7 +12,7 @@ public:
 private:
     MainWindow main_window;
     SDL_Renderer* renderer;
-    Playground Room;
+    Playground* Room;
     SDL_Event event; // Bind keyboard/mouse events
     Snake* Nico;
     Fruit* Apple;

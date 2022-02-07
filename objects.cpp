@@ -16,7 +16,10 @@
 
 #define SIZE_GAIN_BY_EATING 3
 
+#include "snake.hpp"
 #include "objects.hpp"
+#include "graphics.hpp"
+//#include "score.hpp"
 
 // Class FRAGMENT
 Fragment::Fragment(int newX, int newY) {
@@ -41,14 +44,14 @@ void Fragment::printAndNext(SDL_Renderer* renderer, int angle) {
       this-> next-> printAndNext(renderer, angle);
     else if (nextAngle != angle) {
       if ((nextAngle+360)%360 - angle == 90) angle -= 90;
-      printImgOnRenderer("../sprites/L_body_c.png", renderer, {this->x, this->y}, angle);
+      printImgOnRenderer("sprites/L_body_c.png", renderer, {this->x, this->y}, angle);
       this-> next-> printAndNext(renderer, nextAngle);
     } else {
-      printImgOnRenderer("../sprites/body_c.png", renderer, {this->x, this->y}, angle);
+      printImgOnRenderer("sprites/body_c.png", renderer, {this->x, this->y}, angle);
       this-> next-> printAndNext(renderer, nextAngle);
     }
   } else {
-    printImgOnRenderer("../sprites/tail_c.png", renderer, {this->x, this->y}, angle);
+    printImgOnRenderer("sprites/tail_c.png", renderer, {this->x, this->y}, angle);
   }
 }
 
@@ -85,7 +88,7 @@ void Fruit::relocate() {
 }
 
 void Fruit::print(SDL_Renderer* renderer) {
-  printImgOnRenderer("../sprites/apple.png", renderer, {this->x, this->y});
+  printImgOnRenderer("sprites/jam.png", renderer, {this->x, this->y});
 }
  
 
@@ -123,7 +126,7 @@ void Snake::eat(Fruit* whatever) {
 
 void Snake::printEntireSnake(SDL_Renderer* renderer) {
   this-> Head -> next-> printAndNext(renderer, 90*((this->Head->x-this->Head->next->x-1)*(this->Head->x-this->Head->next->x)+this->Head->y-this->Head->next->y));
-  this-> Head -> printSingleSkin("../sprites/head_c.png", renderer, 90*((dirX-1)*dirX+dirY));
+  this-> Head -> printSingleSkin("sprites/head_c.png", renderer, 90*((dirX-1)*dirX+dirY));
 }
 
 bool Snake::hitAWallOrHimself() {

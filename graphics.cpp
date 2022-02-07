@@ -16,7 +16,10 @@
 
 #define SIZE_GAIN_BY_EATING 3
 
+#include "snake.hpp"
+#include "objects.hpp"
 #include "graphics.hpp"
+//#include "score.hpp"
 
 MainWindow::MainWindow() {
   this-> window = NULL; // Affichage fenêtre

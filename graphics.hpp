@@ -1,3 +1,6 @@
+#pragma once
+#include <stdlib.h>
+
 class MainWindow {
 public:
   MainWindow();
