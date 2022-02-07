@@ -80,12 +80,13 @@ void Application::appLoop() {
     if (1000 / this-> frame_rate - tTime > 0) SDL_Delay(1000 / this-> frame_rate - tTime);
   } while (!this-> Nico-> hitAWallOrHimself());
   SDL_Delay(1000);
-  delete Nico; 
+  delete Nico;
+
 }
 
 void Application::appInit() {
   /// Graphical init
-  this-> main_window.init("ゲームをヘビ", SCREEN_WIDTH, SCREEN_HEIGHT);
+  this-> main_window.init("Hebigeemu", SCREEN_WIDTH, SCREEN_HEIGHT);
   this-> renderer = main_window.getRenderer(); // Get renderer
   this-> Room = new Playground(renderer);
   
