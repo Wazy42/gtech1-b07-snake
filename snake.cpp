@@ -14,6 +14,10 @@
 #define FRUIT_COLOR 0, 140, 140
 #define WALL_COLOR 40, 200, 40
 
+#define DIR_UP 3
+#define DIR_DOWN 1
+#define DIR_LEFT 2
+#define DIR_RIGHT 0
 #define SIZE_GAIN_BY_EATING 3
 
 #include "snake.hpp"
@@ -31,42 +35,49 @@ Application::Application() {
   srand(time(0)); // rand() init
   this-> frame_rate = 30; // Frame rate (fps)
   this-> snake_rate = 8; // Tiles per second (tps)
-  appInit();
-  appLoop();
 }
 
 
 Application::~Application(){
   delete this-> Nico;
   delete this-> Apple;
+  delete this-> Room;
+  delete this-> main_window;
+      printf("DESTRUCTION DINIE\n");
   IMG_Quit();
   SDL_Quit();
 }
 
 void Application::appLoop() {
   /// Main loop
-  do {
+  int lastDir = this-> dir; // Last direction (we can't go backward)
+  bool interrupt = false;
+  
+  while (!interrupt) {
     count++; 
     Uint32 tTime = SDL_GetTicks(); // For frame rate
     
     /// Events
-    int lastDir = this-> dir; // Last direction (we can't go backward)
     while (SDL_PollEvent(&this-> event)) { // While there is keyboard/mouse event in the queue
       switch (this-> event.type) {
         case SDL_QUIT: // In case we hit the red X or Alt+f4
-          delete Nico;
-          return;
+          interrupt = true;
         case SDL_KEYDOWN: // We pressed a key on the keyboard
-          if (this-> event.key.keysym.sym == SDLK_UP && lastDir != 1) dir = 3; // Up arrow
-          if (this-> event.key.keysym.sym == SDLK_DOWN && lastDir != 3) dir = 1; // Down arrow
-          if (this-> event.key.keysym.sym == SDLK_LEFT && lastDir != 0) dir = 2; // Left arrow
-          if (this-> event.key.keysym.sym == SDLK_RIGHT && lastDir != 2) dir = 0; // Right arrow
+          if (this-> event.key.keysym.sym == SDLK_UP && lastDir%2 == 0) dir = DIR_UP; // Up arrow
+          if (this-> event.key.keysym.sym == SDLK_DOWN && lastDir%2 == 0) dir = DIR_DOWN; // Down arrow
+          if (this-> event.key.keysym.sym == SDLK_LEFT && lastDir%2 == 1) dir = DIR_LEFT; // Left arrow
+          if (this-> event.key.keysym.sym == SDLK_RIGHT && lastDir%2 == 1) dir = DIR_RIGHT; // Right arrow
       }
     }
-    Nico-> move(dir); // Snake moves forward
-    // If the head is on a fruit, we eat it
-    if (this->Apple->x == this->Nico->Head->x && this->Apple->y == this->Nico->Head->y)
-      this-> Nico->eat(this-> Apple);
+    if (count%(frame_rate/snake_rate) == 0 && !interrupt) {
+      Nico-> move(dir); // Snake moves forward
+      interrupt = this-> Nico-> hitAWallOrHimself();
+      lastDir = this-> dir;
+
+      // If the head is on a fruit, we eat it
+      if (this->Apple->x == this->Nico->Head->x && this->Apple->y == this->Nico->Head->y)
+        this-> Nico->eat(this-> Apple);
+    }
     
     /// Drawing
     this-> Room-> eraseAndWalls();
@@ -78,15 +89,14 @@ void Application::appLoop() {
     tTime = SDL_GetTicks() - tTime; // tTime is now time elapsed in execution
     // If execution time is less than the frame rate (no lag), we wait next frame
     if (1000 / this-> frame_rate - tTime > 0) SDL_Delay(1000 / this-> frame_rate - tTime);
-  } while (!this-> Nico-> hitAWallOrHimself());
-  SDL_Delay(1000);
-  delete Nico; 
+  }
 }
 
 void Application::appInit() {
   /// Graphical init
-  this-> main_window.init("ゲームをヘビ", SCREEN_WIDTH, SCREEN_HEIGHT);
-  this-> renderer = main_window.getRenderer(); // Get renderer
+  this-> main_window = new MainWindow();
+  this-> main_window-> init("ゲームをヘビ", SCREEN_WIDTH, SCREEN_HEIGHT);
+  this-> renderer = main_window-> getRenderer(); // Get renderer
   this-> Room = new Playground(renderer);
   
   /// Variables init

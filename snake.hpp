@@ -10,7 +10,7 @@ public:
     void appLoop();
     void appInit();
 private:
-    MainWindow main_window;
+    MainWindow* main_window;
     SDL_Renderer* renderer;
     Playground* Room;
     SDL_Event event; // Bind keyboard/mouse events
