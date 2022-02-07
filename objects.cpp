@@ -68,9 +68,9 @@ void Fragment::move(int newX, int newY) {
   this-> y = newY;
 }
 
-bool Fragment::checkColision(int newX, int newY) {
+bool Fragment::checkCollision(int newX, int newY) {
   if (this-> x == newX && this-> y == newY) return true;
-  if (this-> next != NULL) return this-> next-> checkColision(newX, newY);
+  if (this-> next != NULL) return this-> next-> checkCollision(newX, newY);
   return false;
 }
 
@@ -130,7 +130,7 @@ void Snake::printEntireSnake(SDL_Renderer* renderer) {
 }
 
 bool Snake::hitAWallOrHimself() {
-  return this-> Head-> next-> checkColision(this-> Head-> x, this-> Head->y)
+  return this-> Head-> next-> checkCollision(this-> Head-> x, this-> Head->y)
         || this-> Head-> x > GRID_WIDTH || this-> Head-> x < 0
         || this-> Head-> y > GRID_HEIGHT || this-> Head-> y < 0;
 }

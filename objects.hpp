@@ -10,7 +10,7 @@ public:
   void createFragment(int newX, int newY);
   void printAndNext(SDL_Renderer* renderer, int angle);
   void printSingleSkin(const char* file, SDL_Renderer* renderer, int angle);
-  bool checkColision(int newX, int newY);
+  bool checkCollision(int newX, int newY);
   Fragment* next; // Next fragment
 private:
 };
