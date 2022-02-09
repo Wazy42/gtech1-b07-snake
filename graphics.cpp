@@ -64,16 +64,30 @@ SDL_Texture* loadSDLImg(const char* file, SDL_Renderer* renderer) {
 
 Playground::Playground(SDL_Renderer* newRenderer) {
   this-> renderer = newRenderer;
+  this-> shield = loadSDLImg("sprites/shield.png", this-> renderer);
   eraseAndWalls();
 }
 
-Playground::~Playground() {}
+Playground::~Playground() {
+  SDL_DestroyTexture(this-> shield);
+}
 
 void Playground::eraseAndWalls() {
   rendererReset(this-> renderer); // Clear the window
   SDL_SetRenderDrawColor(this-> renderer, 20, WALL_COLOR);
-  for (int i = 0; i < TILE_SIZE-1; i++) {
-    SDL_Rect rect = {i, i, TILE_SIZE*(3+GRID_WIDTH)-(i-1)*2, TILE_SIZE*(3+GRID_HEIGHT)-(i-1)*2};
+  for (int i = 0; i < GRID_WIDTH+1; i++) {
+    for (int j = 0; j < GRID_HEIGHT+1; j++) {
+      if ((i+j)%2 == 0) printRectOnRenderer({i, j}, this-> renderer, FLOOR_COLOR1);
+      else printRectOnRenderer({i, j}, this-> renderer, FLOOR_COLOR2);
+    }
+  }
+  SDL_SetRenderDrawColor(this-> renderer, WALL_COLOR, 255);
+  for (int i = 0; i < TILE_SIZE; i++) {
+    SDL_Rect rect = {i, i, TILE_SIZE*(3+GRID_WIDTH)-(i-1)*2-1, TILE_SIZE*(3+GRID_HEIGHT)-(i-1)*2-1};
     SDL_RenderDrawRect(this-> renderer, &rect);
   }
+}
+
+void Playground::printShieldIndicator() {
+  printImgOnRenderer(this-> shield, this-> renderer, {GRID_WIDTH, GRID_HEIGHT+3});
 }
