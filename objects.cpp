@@ -102,6 +102,22 @@ void Fruit::relocate(Fragment* Head, Fragment* Tail) {
   }
 }
 
+int Fruit::score(Fruit *whatever){
+  int score = 0;
+  if (whatever-> type == FRUIT_APPLE && whatever-> type == FRUIT_POOP){
+    score += 10;
+  }
+  else if (whatever-> type == FRUIT_JAM){
+    score +=30;
+  }
+  else if (whatever-> type == FRUIT_SHIELD){
+    score += 75;
+  }
+  return score;
+  printf("SCORE : %d, score");
+}
+
+
 void Fruit::print(SDL_Renderer* renderer) {
   if (this-> type == FRUIT_APPLE)
     printImgOnRenderer(this-> appleTexture, renderer, {this->x, this->y});
