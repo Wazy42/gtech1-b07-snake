@@ -39,6 +39,7 @@ void Application::appLoop() {
   while (!interrupt) {
     count++; 
     Uint32 tTime = SDL_GetTicks(); // For frame rate
+    this-> Room-> eraseAndWalls(); // Clear the window and draw floor and walls
     
     /// Events
     while (SDL_PollEvent(&this-> event)) { // While there is keyboard/mouse event in the queue
@@ -72,10 +73,12 @@ void Application::appLoop() {
     }
     
     /// Drawing
-    this-> Room-> eraseAndWalls();
+    // In the Playground
     this-> Nico-> printEntireSnake(); // Display snake
     this-> Apple-> print(this-> renderer); // Display fruit
+    // In the Score bar
     drawNumber(this-> Nico-> score, TILE_SIZE, (GRID_HEIGHT+4)*TILE_SIZE);
+    if (Nico-> shield == true) Room-> printShieldIndicator();
     SDL_RenderPresent(this-> renderer); // Update the window (print all at once)
 
     /// Frame rate

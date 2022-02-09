@@ -25,6 +25,8 @@ public:
   Playground(SDL_Renderer* newRenderer);
   ~Playground();
   void eraseAndWalls();
+  void printShieldIndicator();
 private:
   SDL_Renderer* renderer;
+  SDL_Texture* shield;
 };

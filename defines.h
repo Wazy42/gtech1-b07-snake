@@ -15,9 +15,9 @@
 #define BG_COLOR 0, 0, 0
 #define SNAKE_COLOR 255, 30, 60
 #define FRUIT_COLOR 0, 140, 140
-#define WALL_COLOR 40, 200, 40
-#define FLOOR_COLOR1 200, 40, 40
-#define FLOOR_COLOR2 220, 40, 40
+#define WALL_COLOR 40, 100, 40
+#define FLOOR_COLOR1 40, 180, 40
+#define FLOOR_COLOR2 40, 200, 40
 
 // SNAKE DIRECTIONS
 #define DIR_UP 3
