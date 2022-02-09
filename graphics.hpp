@@ -26,7 +26,9 @@ public:
   ~Playground();
   void eraseAndWalls();
   void printShieldIndicator();
+  void drawScore(int score);
 private:
   SDL_Renderer* renderer;
   SDL_Texture* shield;
+  void drawDigit(int digit, int xp, int xy);
 };

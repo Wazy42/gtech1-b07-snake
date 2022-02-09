@@ -22,12 +22,15 @@ Use Make to compile your code (be sure to be in the snake folder)
 ```
 make run
 ```
+note: if the snake don't move at the start, please restart the game and X.org server
+note 2: if you want to quit the game, don't click the red cross (it crashes the window), press Alt+f4 instead or hit a wall
 
 ### Controls
 ```UP_ARROW``` -> GO UP   
 ```DOWN_ARROW``` -> GO DOWN   
 ```LEFT_ARROW``` -> GO LEFT   
 ```RIGHT_ARROW``` -> GO RIGHT
+```P``` -> PAUSE/UNPAUSE THE GAME
 
 # Features on the game
 
@@ -37,7 +40,7 @@ The normal fruit from the basic snake game, when you eat the apple, you gain 1 b
 
 ### Poop fruit
 
-It's a fun addon who change nothing, the poop gives 10 points and appears on the tail if 10 rand position were on the snake and you gain 1 body part.
+It's a fun addon who act like an apple, the poop appears on the tail if the apple keep spawning on the snake's body (solution for not fixing our shitty code).
 
 ### Jam
 

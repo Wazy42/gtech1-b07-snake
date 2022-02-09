@@ -91,3 +91,42 @@ void Playground::eraseAndWalls() {
 void Playground::printShieldIndicator() {
   printImgOnRenderer(this-> shield, this-> renderer, {GRID_WIDTH, GRID_HEIGHT+3});
 }
+
+void Playground::drawScore(int score) {
+	int numDigits = 0;
+	for (int n = score; n; n /= 10)	numDigits++;
+
+	while (numDigits) {
+		numDigits--;
+		drawDigit( score % 10, TILE_SIZE + numDigits * 4 * DIGIT_PIXEL_SIZE, (GRID_HEIGHT+4)*TILE_SIZE );
+		score /= 10;
+	}
+}
+
+void Playground::drawDigit(int digit, int xp, int yp) {
+	SDL_Rect rect = { 0, 0, DIGIT_PIXEL_SIZE, DIGIT_PIXEL_SIZE };
+
+	/// Loop if overflow to prevent wrong memory access.
+	digit = digit % 10;
+
+	for ( int y = 0; y < 5; ++y )
+	{
+		for ( int x = 0; x < 3; ++x )
+		{
+			if ( (*(digits[digit]))[y * 3 + x] == 'x' )
+			{
+				// Draw shadow.
+				SDL_SetRenderDrawColor( this->renderer, 0, 0, 0, 255 );
+				rect.x = xp + x * DIGIT_PIXEL_SIZE + DIGIT_PIXEL_SIZE;
+				rect.y = yp + y * DIGIT_PIXEL_SIZE + DIGIT_PIXEL_SIZE;
+				SDL_RenderFillRect( this->renderer, &rect );
+
+				// Draw white square.
+				SDL_SetRenderDrawColor( this->renderer, 255, 255, 255, 255 );
+				rect.x -= DIGIT_PIXEL_SIZE;
+				rect.y -= DIGIT_PIXEL_SIZE;
+				SDL_RenderFillRect( this->renderer, &rect );
+			}
+		}
+	}
+}
