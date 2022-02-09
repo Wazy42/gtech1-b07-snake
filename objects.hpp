@@ -48,6 +48,7 @@ public:
   bool hitAWallOrHimself();
   Fragment* Head;
   bool shield;
+  int score;
 private:
   Fragment* Tail;
   int dirX; // Direction horizonale

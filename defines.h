@@ -24,3 +24,19 @@
 #define DIR_DOWN 1
 #define DIR_LEFT 2
 #define DIR_RIGHT 0
+
+// SCORE NUMBERS
+static const char* zero  = "xxxx xx xx xxxx";
+static const char* one   = "  x  x  x  x  x";
+static const char* two   = "xxx  xxxxx  xxx";
+static const char* three = "xxx  xxxx  xxxx";
+static const char* four  = "x xx xxxx  x  x";
+static const char* five  = "xxxx  xxx  xxxx";
+static const char* six   = "xxxx  xxxx xxxx";
+static const char* seven = "xxx  x  x  x  x";
+static const char* eight = "xxxx xxxxx xxxx";
+static const char* nine  = "xxxx xxxx  xxxx";
+
+static const char** digits[] = { &zero, &one, &two, &three, &four, &five, &six, &seven, &eight, &nine };
+
+static const int DIGIT_PIXEL_SIZE = 5;

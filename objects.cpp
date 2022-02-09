@@ -102,21 +102,6 @@ void Fruit::relocate(Fragment* Head, Fragment* Tail) {
   }
 }
 
-int Fruit::score(Fruit *whatever){
-  int score = 0;
-  if (whatever-> type == FRUIT_APPLE && whatever-> type == FRUIT_POOP){
-    score += 10;
-  }
-  else if (whatever-> type == FRUIT_JAM){
-    score +=30;
-  }
-  else if (whatever-> type == FRUIT_SHIELD){
-    score += 75;
-  }
-  return score;
-  printf("SCORE : %d, score");
-}
-
 
 void Fruit::print(SDL_Renderer* renderer) {
   if (this-> type == FRUIT_APPLE)
@@ -139,6 +124,7 @@ Snake::Snake(int newX, int newY, int dir, SDL_Renderer* newRenderer) {
   this-> Tail = Head-> next;
   this-> actualLenght = 2;
   this-> shield = false;
+  this-> score = -10;
 }
 
 Snake::~Snake() {
@@ -157,10 +143,13 @@ void Snake::move(int dir) {
 
 void Snake::eat(Fruit* whatever) {
   int size_gain = 1;
+  this-> score += 10;
   if (whatever-> type == FRUIT_JAM) {
     size_gain = 3;
+    this-> score += 10;
   } else if (whatever-> type == FRUIT_SHIELD) {
     this-> shield = true;
+    this-> score += 65;
   }
   whatever-> relocate(this-> Head, this-> Tail);
   for (int i = 0; i < size_gain; i++) {

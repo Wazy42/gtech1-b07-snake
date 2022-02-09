@@ -9,7 +9,6 @@ public:
     ~Application();
     void appLoop();
     void appInit();
-    bool shield;
 private:
     MainWindow* main_window;
     SDL_Renderer* renderer;
@@ -21,4 +20,7 @@ private:
     Uint32 snake_rate;
     int dir = 0; // Snake next direction
     int count = 0; // How many cases the snake has moved forward
+    void drawNumber(int number, int x, int y);
+    void drawDigit(int digit, int xp, int xy);
 };
+

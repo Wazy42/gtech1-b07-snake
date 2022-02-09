@@ -73,7 +73,7 @@ void Playground::eraseAndWalls() {
   rendererReset(this-> renderer); // Clear the window
   SDL_SetRenderDrawColor(this-> renderer, 20, WALL_COLOR);
   for (int i = 0; i < TILE_SIZE-1; i++) {
-    SDL_Rect rect = {i, i, TILE_SIZE*(3+GRID_WIDTH)-i*2, TILE_SIZE*(3+GRID_HEIGHT)-i*2};
+    SDL_Rect rect = {i, i, TILE_SIZE*(3+GRID_WIDTH)-(i-1)*2, TILE_SIZE*(3+GRID_HEIGHT)-(i-1)*2};
     SDL_RenderDrawRect(this-> renderer, &rect);
   }
 }

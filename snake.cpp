@@ -75,6 +75,7 @@ void Application::appLoop() {
     this-> Room-> eraseAndWalls();
     this-> Nico-> printEntireSnake(); // Display snake
     this-> Apple-> print(this-> renderer); // Display fruit
+    drawNumber(this-> Nico-> score, TILE_SIZE, (GRID_HEIGHT+4)*TILE_SIZE);
     SDL_RenderPresent(this-> renderer); // Update the window (print all at once)
 
     /// Frame rate
@@ -95,4 +96,52 @@ void Application::appInit() {
   this-> Nico = new Snake(GRID_WIDTH/3, GRID_HEIGHT/2, 0, this-> renderer); // Snake
   this-> Apple = new Fruit(this-> renderer); // Fruit
   this-> Nico-> eat(this-> Apple);
+}
+
+void Application::drawNumber( int number, int x, int y )
+{
+	int numDigits = 0;
+	int n = number;
+	while ( n )
+	{
+		numDigits++;
+		n /= 10;
+	}
+
+	while ( numDigits )
+	{
+		numDigits--;
+
+		drawDigit( number % 10, x + numDigits * 4 * DIGIT_PIXEL_SIZE, y );
+		number /= 10;
+	}
+}
+
+void Application::drawDigit( int digit, int xp, int yp )
+{
+	SDL_Rect rect = { 0, 0, DIGIT_PIXEL_SIZE, DIGIT_PIXEL_SIZE };
+
+	/// Loop if overflow to prevent wrong memory access.
+	digit = digit % 10;
+
+	for ( int y = 0; y < 5; ++y )
+	{
+		for ( int x = 0; x < 3; ++x )
+		{
+			if ( (*(digits[digit]))[y * 3 + x] == 'x' )
+			{
+				// Draw shadow.
+				SDL_SetRenderDrawColor( this->renderer, 0, 0, 0, 255 );
+				rect.x = xp + x * DIGIT_PIXEL_SIZE + DIGIT_PIXEL_SIZE;
+				rect.y = yp + y * DIGIT_PIXEL_SIZE + DIGIT_PIXEL_SIZE;
+				SDL_RenderFillRect( this->renderer, &rect );
+
+				// Draw white square.
+				SDL_SetRenderDrawColor( this->renderer, 255, 255, 255, 255 );
+				rect.x -= DIGIT_PIXEL_SIZE;
+				rect.y -= DIGIT_PIXEL_SIZE;
+				SDL_RenderFillRect( this->renderer, &rect );
+			}
+		}
+	}
 }
