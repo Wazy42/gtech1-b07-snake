@@ -18,7 +18,6 @@
 #define DIR_DOWN 1
 #define DIR_LEFT 2
 #define DIR_RIGHT 0
-#define SIZE_GAIN_BY_EATING 3
 
 #include "snake.hpp"
 #include "objects.hpp"
@@ -82,7 +81,7 @@ void Application::appLoop() {
     
     /// Drawing
     this-> Room-> eraseAndWalls();
-    this-> Nico-> printEntireSnake(this-> renderer); // Display snake
+    this-> Nico-> printEntireSnake(); // Display snake
     this-> Apple-> print(this-> renderer); // Display fruit
     SDL_RenderPresent(this-> renderer); // Update the window (print all at once)
 
@@ -98,9 +97,9 @@ void Application::appInit() {
   this-> main_window = new MainWindow();
   this-> main_window-> init("Snake!", SCREEN_WIDTH, SCREEN_HEIGHT);
   this-> renderer = main_window-> getRenderer(); // Get renderer
-  this-> Room = new Playground(renderer);
+  this-> Room = new Playground(this-> renderer);
   
   /// Variables init
-  this-> Nico = new Snake(GRID_WIDTH/3, GRID_HEIGHT/2, 0); // Snake
-  this-> Apple = new Fruit(); // Fruit
+  this-> Nico = new Snake(GRID_WIDTH/3, GRID_HEIGHT/2, 0, this-> renderer); // Snake
+  this-> Apple = new Fruit(this-> renderer); // Fruit
 }

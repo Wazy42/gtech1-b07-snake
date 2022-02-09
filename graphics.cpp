@@ -14,8 +14,6 @@
 #define FRUIT_COLOR 0, 140, 140
 #define WALL_COLOR 40, 200, 40
 
-#define SIZE_GAIN_BY_EATING 3
-
 #include "snake.hpp"
 #include "objects.hpp"
 #include "graphics.hpp"
@@ -58,16 +56,19 @@ void printRectOnRenderer(SDL_Rect rect, SDL_Renderer* renderer, int r, int g, in
   SDL_RenderFillRect(renderer, &rect);
 }
 
-void printImgOnRenderer(const char* file, SDL_Renderer* renderer, SDL_Rect pos, int angle) {
-  SDL_Surface* img = IMG_Load(file);
-  SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, img);
+void printImgOnRenderer(SDL_Texture* texture, SDL_Renderer* renderer, SDL_Rect pos, int angle) {
   pos.x = (pos.x + 1) * TILE_SIZE;
   pos.y = (pos.y + 1) * TILE_SIZE;
   pos.w = TILE_SIZE;
   pos.h = TILE_SIZE;
   SDL_RenderCopyEx(renderer, texture, NULL, &pos, angle, NULL, SDL_FLIP_NONE);
+}
+
+SDL_Texture* loadSDLImg(const char* file, SDL_Renderer* renderer) {
+  SDL_Surface* img = IMG_Load(file);
+  SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, img);
   SDL_FreeSurface(img);
-  SDL_DestroyTexture(texture);
+  return texture;
 }
 
 
