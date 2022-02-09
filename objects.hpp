@@ -27,12 +27,13 @@ public:
   int x;
   int y;
   int type;
-  void relocate();
+  void relocate(Fragment* Head, Fragment* Tail);
   void print(SDL_Renderer* renderer);
 private:
   SDL_Texture* appleTexture;
   SDL_Texture* jamTexture;
   SDL_Texture* shieldTexture;
+  SDL_Texture* poopTexture;
 };
 
 
@@ -46,6 +47,7 @@ public:
   void printEntireSnake();
   bool hitAWallOrHimself();
   Fragment* Head;
+  bool shield;
 private:
   Fragment* Tail;
   int dirX; // Direction horizonale

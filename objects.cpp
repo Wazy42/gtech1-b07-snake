@@ -2,21 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
-#define SCREEN_WIDTH 1280
-#define SCREEN_HEIGHT 672
-#define TILE_SIZE 32
-#define GRID_WIDTH 37
-#define GRID_HEIGHT 18
-
-#define BG_COLOR 0, 0, 0
-#define SNAKE_COLOR 255, 30, 60
-#define FRUIT_COLOR 0, 140, 140
-#define WALL_COLOR 40, 200, 40
-
-#define FRUIT_APPLE 0
-#define FRUIT_JAM 1
-#define FRUIT_SHIELD 2
+#include "defines.h"
 
 #include "snake.hpp"
 #include "objects.hpp"
@@ -91,21 +77,29 @@ Fruit::Fruit(SDL_Renderer* renderer) {
   this-> appleTexture = loadSDLImg("sprites/apple.png", renderer);
   this-> jamTexture = loadSDLImg("sprites/jam.png", renderer);
   this-> shieldTexture = loadSDLImg("sprites/shield.png", renderer);
-  relocate();
+  this-> poopTexture = loadSDLImg("sprites/poop.png", renderer);
 }
 
 Fruit::~Fruit() {
   SDL_DestroyTexture(this-> appleTexture);
   SDL_DestroyTexture(this-> jamTexture);
   SDL_DestroyTexture(this-> shieldTexture);
+  SDL_DestroyTexture(this-> poopTexture);
 }
 
-void Fruit::relocate() {
-  this-> x = rand() % GRID_WIDTH;
-  this-> y = rand() % GRID_HEIGHT;
+void Fruit::relocate(Fragment* Head, Fragment* Tail) {
   if (rand()%10 == 0) this-> type = FRUIT_SHIELD;
   else if (rand()%5 == 0) this-> type = FRUIT_JAM;
   else this-> type = FRUIT_APPLE;
+
+  for (int i = 0; i == 0 || (i < 10 && Head->checkCollision(this-> x, this-> y)); i++) {
+    this-> x = rand() % GRID_WIDTH;
+    this-> y = rand() % GRID_HEIGHT;
+  } if (Head->checkCollision(this-> x, this-> y)) {
+    this-> type = FRUIT_POOP;
+    this-> x = Tail-> x;
+    this-> y = Tail-> y;
+  }
 }
 
 void Fruit::print(SDL_Renderer* renderer) {
@@ -113,9 +107,10 @@ void Fruit::print(SDL_Renderer* renderer) {
     printImgOnRenderer(this-> appleTexture, renderer, {this->x, this->y});
   else if (this-> type == FRUIT_JAM)
     printImgOnRenderer(this-> jamTexture, renderer, {this->x, this->y});
-  else
+  else if (this-> type == FRUIT_SHIELD)
     printImgOnRenderer(this-> shieldTexture, renderer, {this->x, this->y});
-  
+  else
+    printImgOnRenderer(this-> poopTexture, renderer, {this->x, this->y});
 }
  
 
@@ -127,6 +122,7 @@ Snake::Snake(int newX, int newY, int dir, SDL_Renderer* newRenderer) {
   this-> Head-> createFragment(newX - this-> dirX, newY - this-> dirY);
   this-> Tail = Head-> next;
   this-> actualLenght = 2;
+  this-> shield = false;
 }
 
 Snake::~Snake() {
@@ -147,8 +143,10 @@ void Snake::eat(Fruit* whatever) {
   int size_gain = 1;
   if (whatever-> type == FRUIT_JAM) {
     size_gain = 3;
+  } else if (whatever-> type == FRUIT_SHIELD) {
+    this-> shield = true;
   }
-  whatever-> relocate();
+  whatever-> relocate(this-> Head, this-> Tail);
   for (int i = 0; i < size_gain; i++) {
     this-> Head-> createFragment(this-> Tail-> x, this-> Tail-> y);
     this-> Tail = this-> Tail -> next;

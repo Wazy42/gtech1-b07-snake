@@ -2,22 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
-#define SCREEN_WIDTH 1280
-#define SCREEN_HEIGHT 672
-#define TILE_SIZE 32
-#define GRID_WIDTH 37
-#define GRID_HEIGHT 18
-
-#define BG_COLOR 0, 0, 0
-#define SNAKE_COLOR 255, 30, 60
-#define FRUIT_COLOR 0, 140, 140
-#define WALL_COLOR 40, 200, 40
-
-#define DIR_UP 3
-#define DIR_DOWN 1
-#define DIR_LEFT 2
-#define DIR_RIGHT 0
+#include "defines.h"
 
 #include "snake.hpp"
 #include "objects.hpp"
@@ -71,7 +56,14 @@ void Application::appLoop() {
     }
     if (count%(frame_rate/snake_rate) == 0 && !interrupt) {
       Nico-> move(dir); // Snake moves forward
-      interrupt = this-> Nico-> hitAWallOrHimself();
+      if (this-> Nico-> hitAWallOrHimself()) {
+        if (Nico-> shield == true) {
+          Nico-> Head-> x = (Nico-> Head-> x + GRID_WIDTH)%GRID_WIDTH;
+          Nico-> Head-> y = (Nico-> Head-> y + GRID_HEIGHT)%GRID_HEIGHT;
+          Nico-> shield = false;
+        }
+        else interrupt = true;
+      }
       lastDir = this-> dir;
 
       // If the head is on a fruit, we eat it
@@ -102,4 +94,5 @@ void Application::appInit() {
   /// Variables init
   this-> Nico = new Snake(GRID_WIDTH/3, GRID_HEIGHT/2, 0, this-> renderer); // Snake
   this-> Apple = new Fruit(this-> renderer); // Fruit
+  this-> Nico-> eat(this-> Apple);
 }

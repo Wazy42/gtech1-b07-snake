@@ -2,17 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
-#define SCREEN_WIDTH 1280
-#define SCREEN_HEIGHT 672
-#define TILE_SIZE 32
-#define GRID_WIDTH 37
-#define GRID_HEIGHT 18
-
-#define BG_COLOR 0, 0, 0
-#define SNAKE_COLOR 255, 30, 60
-#define FRUIT_COLOR 0, 140, 140
-#define WALL_COLOR 40, 200, 40
+#include "defines.h"
 
 #include "snake.hpp"
 #include "objects.hpp"
@@ -31,7 +21,7 @@ MainWindow::~MainWindow() {
 
 void MainWindow::init(const char *name, int width, int height) {
   // Init window & randerer
-  if (SDL_CreateWindowAndRenderer(SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_RESIZABLE, &window, &renderer) < 0) {
+  if (SDL_CreateWindowAndRenderer(width, height, 0, &window, &renderer) < 0) {
     printf("Erreur lors de la creation d'un renderer : %s\n", SDL_GetError());
     return;
   }
@@ -83,7 +73,7 @@ void Playground::eraseAndWalls() {
   rendererReset(this-> renderer); // Clear the window
   SDL_SetRenderDrawColor(this-> renderer, 20, WALL_COLOR);
   for (int i = 0; i < TILE_SIZE-1; i++) {
-    SDL_Rect rect = {i, i, SCREEN_WIDTH-(i+1)*2, SCREEN_HEIGHT-(i+1)*2};
+    SDL_Rect rect = {i, i, TILE_SIZE*(3+GRID_WIDTH)-i*2, TILE_SIZE*(3+GRID_HEIGHT)-i*2};
     SDL_RenderDrawRect(this-> renderer, &rect);
   }
 }

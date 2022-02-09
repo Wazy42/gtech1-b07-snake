@@ -9,6 +9,7 @@ public:
     ~Application();
     void appLoop();
     void appInit();
+    bool shield;
 private:
     MainWindow* main_window;
     SDL_Renderer* renderer;

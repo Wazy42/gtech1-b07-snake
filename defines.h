@@ -1,0 +1,26 @@
+// SCREEN AND GRID
+#define SCREEN_WIDTH 1280
+#define SCREEN_HEIGHT 736
+#define TILE_SIZE 32
+#define GRID_WIDTH 37
+#define GRID_HEIGHT 18
+
+// FRUITS TYPES
+#define FRUIT_APPLE 0
+#define FRUIT_JAM 1
+#define FRUIT_SHIELD 2
+#define FRUIT_POOP 3
+
+// COLORS
+#define BG_COLOR 0, 0, 0
+#define SNAKE_COLOR 255, 30, 60
+#define FRUIT_COLOR 0, 140, 140
+#define WALL_COLOR 40, 200, 40
+#define FLOOR_COLOR1 200, 40, 40
+#define FLOOR_COLOR2 220, 40, 40
+
+// SNAKE DIRECTIONS
+#define DIR_UP 3
+#define DIR_DOWN 1
+#define DIR_LEFT 2
+#define DIR_RIGHT 0
