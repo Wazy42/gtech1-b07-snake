@@ -79,9 +79,9 @@ void Fragment::move(int newX, int newY) {
   this-> y = newY;
 }
 
-bool Fragment::checkColision(int newX, int newY) {
+bool Fragment::checkCollision(int newX, int newY) {
   if (this-> x == newX && this-> y == newY) return true;
-  if (this-> next != NULL) return this-> next-> checkColision(newX, newY);
+  if (this-> next != NULL) return this-> next-> checkCollision(newX, newY);
   return false;
 }
 
@@ -103,7 +103,7 @@ Fruit::~Fruit() {
 void Fruit::relocate() {
   this-> x = rand() % GRID_WIDTH;
   this-> y = rand() % GRID_HEIGHT;
-  if (rand()%50 == 0) this-> type = FRUIT_SHIELD;
+  if (rand()%10 == 0) this-> type = FRUIT_SHIELD;
   else if (rand()%5 == 0) this-> type = FRUIT_JAM;
   else this-> type = FRUIT_APPLE;
 }
@@ -162,7 +162,7 @@ void Snake::printEntireSnake() {
 }
 
 bool Snake::hitAWallOrHimself() {
-  return this-> Head-> next-> checkColision(this-> Head-> x, this-> Head->y)
+  return this-> Head-> next-> checkCollision(this-> Head-> x, this-> Head->y)
         || this-> Head-> x > GRID_WIDTH || this-> Head-> x < 0
         || this-> Head-> y > GRID_HEIGHT || this-> Head-> y < 0;
 }

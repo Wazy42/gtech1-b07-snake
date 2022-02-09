@@ -10,7 +10,7 @@ public:
   void createFragment(int newX, int newY);
   void printAndNext(int angle);
   void printHeadSkin(int angle);
-  bool checkColision(int newX, int newY);
+  bool checkCollision(int newX, int newY);
   Fragment* next; // Next fragment
 private:
   SDL_Texture* headTexture;
