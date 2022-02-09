@@ -7,7 +7,6 @@
 #include "snake.hpp"
 #include "objects.hpp"
 #include "graphics.hpp"
-//#include "score.hpp"
 
 
 Application::Application() {

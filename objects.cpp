@@ -7,7 +7,6 @@
 #include "snake.hpp"
 #include "objects.hpp"
 #include "graphics.hpp"
-//#include "score.hpp"
 
 // Class FRAGMENT
 Fragment::Fragment(int newX, int newY, SDL_Renderer* newRenderer) {
