@@ -1,0 +1,137 @@
+@startuml
+
+
+
+
+
+/' Objects '/
+
+class Application {
+	+Application()
+	+~Application()
+	-Apple : Fruit*
+	-main_window : MainWindow*
+	-Room : Playground*
+	-event : SDL_Event
+	-renderer : SDL_Renderer*
+	-Nico : Snake*
+	-frame_rate : Uint32
+	-snake_rate : Uint32
+	-count : int
+	-dir : int
+	+appInit() : void
+	+appLoop() : void
+	-drawDigit(int digit, int xp, int xy) : void
+	-drawNumber(int number, int x, int y) : void
+}
+
+
+class Fragment {
+	+Fragment(int newX, int newY, SDL_Renderer* newRenderer)
+	+~Fragment()
+	+next : Fragment*
+	-renderer : SDL_Renderer*
+	-L_bodyTexture : SDL_Texture*
+	-bodyTexture : SDL_Texture*
+	-headTexture : SDL_Texture*
+	-tailTexture : SDL_Texture*
+	+checkCollision(int newX, int newY) : bool
+	+x : int
+	+y : int
+	+createFragment(int newX, int newY) : void
+	+move(int newX, int newY) : void
+	+printAndNext(int angle) : void
+	+printHeadSkin(int angle) : void
+}
+
+
+class Fruit {
+	+Fruit(SDL_Renderer* renderer)
+	+~Fruit()
+	-appleTexture : SDL_Texture*
+	-jamTexture : SDL_Texture*
+	-poopTexture : SDL_Texture*
+	-shieldTexture : SDL_Texture*
+	+type : int
+	+x : int
+	+y : int
+	+print(SDL_Renderer* renderer) : void
+	+relocate(Fragment* Head, Fragment* Tail) : void
+}
+
+
+class MainWindow {
+	+MainWindow()
+	+~MainWindow()
+	+getRenderer() : SDL_Renderer*
+	-renderer : SDL_Renderer*
+	-window : SDL_Window*
+	+init(const char* name, int width, int height) : void
+}
+
+
+class Playground {
+	+Playground(SDL_Renderer* newRenderer)
+	+~Playground()
+	-renderer : SDL_Renderer*
+	+eraseAndWalls() : void
+}
+
+
+class Snake {
+	+Snake(int newX, int newY, int dir, SDL_Renderer* newRenderer)
+	+~Snake()
+	+Head : Fragment*
+	-Tail : Fragment*
+	-renderer : SDL_Renderer*
+	+hitAWallOrHimself() : bool
+	+shield : bool
+	-actualLenght : int
+	-dirX : int
+	-dirY : int
+	+score : int
+	+changeDir(int dir) : void
+	+eat(Fruit* whatever) : void
+	+move(int dir) : void
+	+printEntireSnake() : void
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+
+
+
+/' Aggregation relationships '/
+
+.Application o-- .Fruit
+
+
+.Application o-- .MainWindow
+
+
+.Application o-- .Playground
+
+
+.Application o-- .Snake
+
+
+.Fragment o-- .Fragment
+
+
+.Snake "2" o-- .Fragment
+
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml
+

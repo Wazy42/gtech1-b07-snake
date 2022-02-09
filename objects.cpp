@@ -146,7 +146,7 @@ void Snake::eat(Fruit* whatever) {
   this-> score += 10;
   if (whatever-> type == FRUIT_JAM) {
     size_gain = 3;
-    this-> score += 10;
+    this-> score += 20;
   } else if (whatever-> type == FRUIT_SHIELD) {
     this-> shield = true;
     this-> score += 65;
