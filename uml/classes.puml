@@ -17,12 +17,11 @@ class Application {
 	-Nico : Snake*
 	-frame_rate : Uint32
 	-snake_rate : Uint32
+	-paused : bool
 	-count : int
 	-dir : int
 	+appInit() : void
 	+appLoop() : void
-	-drawDigit(int digit, int xp, int xy) : void
-	-drawNumber(int number, int x, int y) : void
 }
 
 
@@ -74,7 +73,11 @@ class Playground {
 	+Playground(SDL_Renderer* newRenderer)
 	+~Playground()
 	-renderer : SDL_Renderer*
+	-shield : SDL_Texture*
+	-drawDigit(int digit, int xp, int xy) : void
+	+drawScore(int score) : void
 	+eraseAndWalls() : void
+	+printShieldIndicator() : void
 }
 
 
